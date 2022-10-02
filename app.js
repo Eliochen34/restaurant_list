@@ -22,10 +22,10 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  const restaurants = restaurantList.results.filter(item => item.name.toLowerCase().includes(keyword) || item.category.toLowerCase().includes(keyword))
+  const restaurants = restaurantList.results.filter(item => item.name.toLowerCase().trim().includes(keyword) || item.category.toLowerCase().trim().includes(keyword))
   res.render('index', {restaurants: restaurants, keyword: keyword})
 })
 
 app.listen(port, () => {
-  console.log('GG')
+  console.log(`The restaurant list project is running on the http:localhost:${port}.`)
 })
