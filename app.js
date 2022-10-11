@@ -5,6 +5,9 @@ const port = 3000
 const exphbs = require('express-handlebars')
 const restaurantList = require('./restaurant.json')
 const Restaurant = require('./models/restaurant')
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
@@ -33,17 +36,20 @@ app.get('/', (req, res) => {
     .lean()
     .then(restaurants => res.render('index', { restaurants }))
     .catch(error => console.log(error))
-  // res.render('index', {restaurants: restaurantList.results})
 })
+
+// 新增餐廳頁面
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
 
 // 檢視單一餐廳
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  // const restaurant = Restaurant.find(item => item.id.toString() === req.params.restaurant_id)
   Restaurant.findById(req.params.restaurant_id)
     .lean()
     .then(restaurant => res.render('show', { restaurant }))
     .catch(error => console.log(error))
-  // res.render('show', {restaurant: restaurant})
 })
 
 
@@ -51,6 +57,15 @@ app.get('/search', (req, res) => {
   const keyword = req.query.keyword
   const restaurants = restaurantList.results.filter(item => item.name.toLowerCase().trim().includes(keyword) || item.category.toLowerCase().trim().includes(keyword))
   res.render('index', {restaurants: restaurants, keyword: keyword})
+})
+
+// 新增餐廳
+app.post("/restaurants", (req, res) => {
+  console.log('1111')
+  console.log(req.body)
+  Restaurant.create(req.body)
+    .then(() => res.redirect("/"))
+    .catch(err => console.log(err))
 })
 
 app.post('/restaurant/:restaurant_id/delete', (req, res) => {
