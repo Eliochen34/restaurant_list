@@ -25,7 +25,7 @@
         <div class="card-columns">
           {{#each restaurants}}
             <div class="mb-5">
-              <a href="/restaurants/{{this.id}}" class="text-secondary">
+              <a href="/restaurants/{{this._id}}" class="text-secondary">
                 <div class="card mb-3">
                   <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
                   <div class="card-body p-3">
@@ -43,9 +43,9 @@
                 </div>
               </a>
               <div class="d-flex justify-content-end">
-                <a href="" class="m-1">Edit</a>
-                <a href="/restaurants/{{this.id}}" class="m-1">Detail</a>
-                <form action="" style="display: inline;">
+                <a href="/restaurants/{{ this._id }}/edit" class="m-1">Edit</a>
+                <a href="/restaurants/{{ this._id }}" class="m-1">Detail</a>
+                <form action="/restaurant/{{ this._id }}/delete" mothod="POST" style="display: inline;">
                   <button type="submit">Delete</button>
                 </form>
               </div>
