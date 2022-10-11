@@ -7,7 +7,7 @@ const restaurantList = require('./restaurant.json')
 const Restaurant = require('./models/restaurant')
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
-
+const methodOverride = require("method-override")
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
@@ -16,7 +16,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 mongoose.connect(process.env.MONGODB_URI2, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
 
 app.use(express.static('public'))
-console.log(process.env.MONGODB_URI2)
+app.use(methodOverride("_method"))
 
 // 取得資料庫連線狀態
 const db = mongoose.connection
@@ -59,12 +59,25 @@ app.get('/search', (req, res) => {
   res.render('index', {restaurants: restaurants, keyword: keyword})
 })
 
-// 新增餐廳
+// 新增餐廳功能
 app.post("/restaurants", (req, res) => {
-  console.log('1111')
-  console.log(req.body)
   Restaurant.create(req.body)
     .then(() => res.redirect("/"))
+    .catch(err => console.log(err))
+})
+
+// 編輯餐廳功頁面
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  Restaurant.findById(req.params.restaurant_id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(err => console.log(err))
+})
+
+// 更新餐廳功能
+app.put('/restaurants/:restaurant_id', (req, res) => {
+  Restaurant.findByIdAndUpdate(req.params.restaurant_id, req.body)
+    .then(() => res.redirect(`/restaurants/${req.params.restaurant_id}`))
     .catch(err => console.log(err))
 })
 
