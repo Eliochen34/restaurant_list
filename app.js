@@ -27,6 +27,23 @@ app.use(routes)
 // })
 
 
+// 關鍵字搜索餐廳
+app.get('/search', (req, res) => {
+  if (!req.query.keyword) {
+    res.redirect('/')
+  }
+  const keyword = req.query.keyword
+  Restaurant.find({})
+    .lean()
+    .then(restaurants => {
+      const filteredRestaurants = restaurants.filter(
+        restaurant => restaurant.name.toLowerCase().includes(keyword) ||
+          restaurant.category.includes(keyword)
+      )
+      res.render('index', { restaurants: filteredRestaurants, keyword })
+    })
+})
+
 
 app.listen(port, () => {
   console.log(`The restaurant list project is running on the http:localhost:${port}.`)
