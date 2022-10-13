@@ -6,6 +6,7 @@ Here lists the specific restaurants and some information about these restaurants
 - Search function for these restaurants about the name and category.
 - Connect to the google map with the restaurant's location.
 - 10/11: Add create, edit, delete restaurants functions.
+- 10/13: Add sorting function & change the layout of create button and searchbar.
 ## Get Started
 1. Install the Node.js and npm.
 2. Clone this project to local.
