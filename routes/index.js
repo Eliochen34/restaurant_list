@@ -3,8 +3,13 @@ const router = express.Router()
 
 const home = require('./modules/home')
 const restaurants = require('./modules/restaurants')
+const users = require('./modules/users')
+const auth = require('./modules/auth')
+const { authenticator } = require('../middleware/auth') // 掛載 middleware
 
-router.use('/', home)
-router.use('/restaurants', restaurants)
+router.use('/restaurants', authenticator, restaurants) // 將網址結構符合 /todos字串開頭的request導向todos模組
+router.use('/users', users)
+router.use('/auth', auth)
+router.use('/', authenticator, home)
 
 module.exports = router

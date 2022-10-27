@@ -18,7 +18,7 @@
       {{!-- sorting drop down --}}
       <div class="form-group">
         <form action="/">
-          <select name="sort" id="sort" oninput="form.submit()">
+          <select name="sort" id="sort" oninput="form.submit()" class="btn btn-secondary dropdown-toggle">
             <option value="0">Sort</option>
             <option value="1">A->Z</option>
             <option value="2">Z->A</option>
@@ -30,11 +30,11 @@
     </div>
   </div>
   
-  
   <!-- restaurant list -->
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-10 col-12 mx-auto">
+        <a href="/restaurants/new"> <button class="btn btn-info mb-3">新增餐廳</button> </a>
         <div class="card-columns">
           {{#each restaurants}}
             <div class="mb-1">
@@ -52,10 +52,10 @@
                     </span>
                   </div>
                   <div class="card-footer d-flex justify-content-end flex-wrap">
-                    <a href="/restaurants/{{ this._id }}/edit" class="m-1">Edit</a>
-                    <a href="/restaurants/{{ this._id }}" class="m-1">Detail</a>
+                    <a href="/restaurants/{{ this._id }}/edit" class="btn btn-info">Edit</a>
+                    <a href="/restaurants/{{ this._id }}" class="btn btn-primary">Detail</a>
                     <form action="/restaurants/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
-                      <button type="submit">Delete</button>
+                      <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                   </div>
                 </div>
