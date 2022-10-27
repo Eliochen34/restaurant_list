@@ -4,7 +4,8 @@ const Restaurant = require('../../models/restaurant')
 const sorting = require('../../utility/sorting')
 
 router.get('/', (req, res) => {
-  Restaurant.find()
+  const userId = req.user._id
+  Restaurant.find({ userId })
     .lean()
     .sort(sorting(req.query.sort))
     .then(restaurants => res.render('index', { restaurants }))
