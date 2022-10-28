@@ -11,16 +11,16 @@ module.exports = app => {
   app.use(passport.session())
 
   // 登入驗證機制
-  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
     User.findOne({ email })
       .then(user => {
         if (!user) {
-          return done(null, false, { message: 'That email is not registered!' })
+          return done(null, false, req.flash('warning_msg', '此帳號未註冊！'))
         }
         // 在登入時，判斷密碼與資料庫密碼是否正確改為用bcrypt來判斷
         return bcrypt.compare(password, user.password).then(isMatch => {
           if (!isMatch) {
-            return done(null, false, { message: 'Email or Password incorrect.' })
+            return done(null, false, req.flash('warning_msg', '密碼錯誤！'))
           }
           return done(null, user)
         })
